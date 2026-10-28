@@ -1,0 +1,1044 @@
+{
+  "format": "termbox-deck",
+  "version": 1,
+  "exportedAt": "2026-10-27T00:00:00.000Z",
+  "deck": {
+    "id": "human-skeleton-206",
+    "name": "Human Skeleton — 206 Adult Bones",
+    "flip": "term",
+    "created": 0,
+    "updated": 0,
+    "cards": [
+      {
+        "i": "bone-001",
+        "t": "Frontal bone",
+        "d": "Forehead; forms the roof of the eye sockets and part of the cranial floor."
+      },
+      {
+        "i": "bone-002",
+        "t": "Left Parietal bone",
+        "d": "Forms much of the upper sides and roof of the skull."
+      },
+      {
+        "i": "bone-003",
+        "t": "Right Parietal bone",
+        "d": "Forms much of the upper sides and roof of the skull."
+      },
+      {
+        "i": "bone-004",
+        "t": "Left Temporal bone",
+        "d": "Side/base of skull; contains structures of the ear and contributes to the jaw joint."
+      },
+      {
+        "i": "bone-005",
+        "t": "Right Temporal bone",
+        "d": "Side/base of skull; contains structures of the ear and contributes to the jaw joint."
+      },
+      {
+        "i": "bone-006",
+        "t": "Occipital bone",
+        "d": "Back and base of skull; surrounds the foramen magnum."
+      },
+      {
+        "i": "bone-007",
+        "t": "Sphenoid bone",
+        "d": "Butterfly-shaped bone at skull base; contributes to eye sockets and contains the sella turcica."
+      },
+      {
+        "i": "bone-008",
+        "t": "Ethmoid bone",
+        "d": "Between the eyes; contributes to the nasal cavity, nasal septum, and medial eye sockets."
+      },
+      {
+        "i": "bone-009",
+        "t": "Left Maxilla",
+        "d": "Upper jaw; supports upper teeth and contributes to hard palate, nasal cavity, and eye socket."
+      },
+      {
+        "i": "bone-010",
+        "t": "Right Maxilla",
+        "d": "Upper jaw; supports upper teeth and contributes to hard palate, nasal cavity, and eye socket."
+      },
+      {
+        "i": "bone-011",
+        "t": "Left Zygomatic bone",
+        "d": "Cheekbone; contributes to the cheek prominence and lateral eye socket."
+      },
+      {
+        "i": "bone-012",
+        "t": "Right Zygomatic bone",
+        "d": "Cheekbone; contributes to the cheek prominence and lateral eye socket."
+      },
+      {
+        "i": "bone-013",
+        "t": "Left Nasal bone",
+        "d": "Forms the bridge of the nose."
+      },
+      {
+        "i": "bone-014",
+        "t": "Right Nasal bone",
+        "d": "Forms the bridge of the nose."
+      },
+      {
+        "i": "bone-015",
+        "t": "Left Lacrimal bone",
+        "d": "Small bone on the medial wall of the eye socket near the tear drainage system."
+      },
+      {
+        "i": "bone-016",
+        "t": "Right Lacrimal bone",
+        "d": "Small bone on the medial wall of the eye socket near the tear drainage system."
+      },
+      {
+        "i": "bone-017",
+        "t": "Left Palatine bone",
+        "d": "Contributes to the back of the hard palate and parts of the nasal cavity and eye socket."
+      },
+      {
+        "i": "bone-018",
+        "t": "Right Palatine bone",
+        "d": "Contributes to the back of the hard palate and parts of the nasal cavity and eye socket."
+      },
+      {
+        "i": "bone-019",
+        "t": "Left Inferior nasal concha",
+        "d": "Curved bone in the nasal cavity that helps condition inhaled air."
+      },
+      {
+        "i": "bone-020",
+        "t": "Right Inferior nasal concha",
+        "d": "Curved bone in the nasal cavity that helps condition inhaled air."
+      },
+      {
+        "i": "bone-021",
+        "t": "Vomer",
+        "d": "Forms the lower part of the bony nasal septum."
+      },
+      {
+        "i": "bone-022",
+        "t": "Mandible",
+        "d": "Lower jaw; holds lower teeth and moves at the temporomandibular joints."
+      },
+      {
+        "i": "bone-023",
+        "t": "Left malleus",
+        "d": "Hammer-shaped middle-ear bone that receives vibration from the eardrum."
+      },
+      {
+        "i": "bone-024",
+        "t": "Left incus",
+        "d": "Anvil-shaped middle-ear bone transmitting vibration from malleus to stapes."
+      },
+      {
+        "i": "bone-025",
+        "t": "Left stapes",
+        "d": "Stirrup-shaped smallest auditory ossicle; transmits vibration to the inner ear."
+      },
+      {
+        "i": "bone-026",
+        "t": "Right malleus",
+        "d": "Hammer-shaped middle-ear bone that receives vibration from the eardrum."
+      },
+      {
+        "i": "bone-027",
+        "t": "Right incus",
+        "d": "Anvil-shaped middle-ear bone transmitting vibration from malleus to stapes."
+      },
+      {
+        "i": "bone-028",
+        "t": "Right stapes",
+        "d": "Stirrup-shaped smallest auditory ossicle; transmits vibration to the inner ear."
+      },
+      {
+        "i": "bone-029",
+        "t": "Hyoid bone",
+        "d": "U-shaped neck bone supporting the tongue and anchoring swallowing and speech muscles; it does not directly articulate with another bone."
+      },
+      {
+        "i": "bone-030",
+        "t": "Atlas (C1)",
+        "d": "First cervical vertebra; supports the skull and allows nodding."
+      },
+      {
+        "i": "bone-031",
+        "t": "Axis (C2)",
+        "d": "Second cervical vertebra; its dens acts as a pivot for head rotation."
+      },
+      {
+        "i": "bone-032",
+        "t": "Cervical vertebra C3",
+        "d": "One of seven neck vertebrae supporting the head and allowing neck movement."
+      },
+      {
+        "i": "bone-033",
+        "t": "Cervical vertebra C4",
+        "d": "One of seven neck vertebrae supporting the head and allowing neck movement."
+      },
+      {
+        "i": "bone-034",
+        "t": "Cervical vertebra C5",
+        "d": "One of seven neck vertebrae supporting the head and allowing neck movement."
+      },
+      {
+        "i": "bone-035",
+        "t": "Cervical vertebra C6",
+        "d": "One of seven neck vertebrae supporting the head and allowing neck movement."
+      },
+      {
+        "i": "bone-036",
+        "t": "Cervical vertebra C7",
+        "d": "One of seven neck vertebrae supporting the head and allowing neck movement."
+      },
+      {
+        "i": "bone-037",
+        "t": "Thoracic vertebra T1",
+        "d": "Thoracic vertebra 1; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-038",
+        "t": "Thoracic vertebra T2",
+        "d": "Thoracic vertebra 2; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-039",
+        "t": "Thoracic vertebra T3",
+        "d": "Thoracic vertebra 3; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-040",
+        "t": "Thoracic vertebra T4",
+        "d": "Thoracic vertebra 4; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-041",
+        "t": "Thoracic vertebra T5",
+        "d": "Thoracic vertebra 5; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-042",
+        "t": "Thoracic vertebra T6",
+        "d": "Thoracic vertebra 6; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-043",
+        "t": "Thoracic vertebra T7",
+        "d": "Thoracic vertebra 7; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-044",
+        "t": "Thoracic vertebra T8",
+        "d": "Thoracic vertebra 8; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-045",
+        "t": "Thoracic vertebra T9",
+        "d": "Thoracic vertebra 9; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-046",
+        "t": "Thoracic vertebra T10",
+        "d": "Thoracic vertebra 10; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-047",
+        "t": "Thoracic vertebra T11",
+        "d": "Thoracic vertebra 11; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-048",
+        "t": "Thoracic vertebra T12",
+        "d": "Thoracic vertebra 12; articulates with ribs and forms part of the upper back."
+      },
+      {
+        "i": "bone-049",
+        "t": "Lumbar vertebra L1",
+        "d": "Large weight-bearing vertebra 1 of the lower back."
+      },
+      {
+        "i": "bone-050",
+        "t": "Lumbar vertebra L2",
+        "d": "Large weight-bearing vertebra 2 of the lower back."
+      },
+      {
+        "i": "bone-051",
+        "t": "Lumbar vertebra L3",
+        "d": "Large weight-bearing vertebra 3 of the lower back."
+      },
+      {
+        "i": "bone-052",
+        "t": "Lumbar vertebra L4",
+        "d": "Large weight-bearing vertebra 4 of the lower back."
+      },
+      {
+        "i": "bone-053",
+        "t": "Lumbar vertebra L5",
+        "d": "Large weight-bearing vertebra 5 of the lower back."
+      },
+      {
+        "i": "bone-054",
+        "t": "Sacrum",
+        "d": "Triangular fused bone at the base of the spine, formed from five sacral vertebrae; joins the pelvis."
+      },
+      {
+        "i": "bone-055",
+        "t": "Coccyx",
+        "d": "Tailbone at the end of the spine, usually formed from four fused small vertebrae."
+      },
+      {
+        "i": "bone-056",
+        "t": "Sternum",
+        "d": "Breastbone in the center of the chest; consists of manubrium, body, and xiphoid process."
+      },
+      {
+        "i": "bone-057",
+        "t": "Left Rib 1",
+        "d": "True rib 1; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-058",
+        "t": "Right Rib 1",
+        "d": "True rib 1; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-059",
+        "t": "Left Rib 2",
+        "d": "True rib 2; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-060",
+        "t": "Right Rib 2",
+        "d": "True rib 2; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-061",
+        "t": "Left Rib 3",
+        "d": "True rib 3; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-062",
+        "t": "Right Rib 3",
+        "d": "True rib 3; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-063",
+        "t": "Left Rib 4",
+        "d": "True rib 4; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-064",
+        "t": "Right Rib 4",
+        "d": "True rib 4; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-065",
+        "t": "Left Rib 5",
+        "d": "True rib 5; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-066",
+        "t": "Right Rib 5",
+        "d": "True rib 5; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-067",
+        "t": "Left Rib 6",
+        "d": "True rib 6; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-068",
+        "t": "Right Rib 6",
+        "d": "True rib 6; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-069",
+        "t": "Left Rib 7",
+        "d": "True rib 7; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-070",
+        "t": "Right Rib 7",
+        "d": "True rib 7; attaches directly to the sternum through its own cartilage."
+      },
+      {
+        "i": "bone-071",
+        "t": "Left Rib 8",
+        "d": "False rib 8; connects through cartilage to the rib above."
+      },
+      {
+        "i": "bone-072",
+        "t": "Right Rib 8",
+        "d": "False rib 8; connects through cartilage to the rib above."
+      },
+      {
+        "i": "bone-073",
+        "t": "Left Rib 9",
+        "d": "False rib 9; connects through cartilage to the rib above."
+      },
+      {
+        "i": "bone-074",
+        "t": "Right Rib 9",
+        "d": "False rib 9; connects through cartilage to the rib above."
+      },
+      {
+        "i": "bone-075",
+        "t": "Left Rib 10",
+        "d": "False rib 10; connects through cartilage to the rib above."
+      },
+      {
+        "i": "bone-076",
+        "t": "Right Rib 10",
+        "d": "False rib 10; connects through cartilage to the rib above."
+      },
+      {
+        "i": "bone-077",
+        "t": "Left Rib 11",
+        "d": "Floating rib 11; has no anterior attachment to the sternum."
+      },
+      {
+        "i": "bone-078",
+        "t": "Right Rib 11",
+        "d": "Floating rib 11; has no anterior attachment to the sternum."
+      },
+      {
+        "i": "bone-079",
+        "t": "Left Rib 12",
+        "d": "Floating rib 12; has no anterior attachment to the sternum."
+      },
+      {
+        "i": "bone-080",
+        "t": "Right Rib 12",
+        "d": "Floating rib 12; has no anterior attachment to the sternum."
+      },
+      {
+        "i": "bone-081",
+        "t": "Left Clavicle",
+        "d": "Collarbone; connects sternum to scapula and braces the shoulder away from the trunk."
+      },
+      {
+        "i": "bone-082",
+        "t": "Right Clavicle",
+        "d": "Collarbone; connects sternum to scapula and braces the shoulder away from the trunk."
+      },
+      {
+        "i": "bone-083",
+        "t": "Left Scapula",
+        "d": "Shoulder blade; flat bone on the back of the rib cage with the glenoid cavity for the humerus."
+      },
+      {
+        "i": "bone-084",
+        "t": "Right Scapula",
+        "d": "Shoulder blade; flat bone on the back of the rib cage with the glenoid cavity for the humerus."
+      },
+      {
+        "i": "bone-085",
+        "t": "Left humerus",
+        "d": "Upper-arm bone extending from shoulder to elbow."
+      },
+      {
+        "i": "bone-086",
+        "t": "Left radius",
+        "d": "Forearm bone on the thumb side; rotates around the ulna during forearm rotation."
+      },
+      {
+        "i": "bone-087",
+        "t": "Left ulna",
+        "d": "Forearm bone on the little-finger side; forms the prominent hinge at the elbow."
+      },
+      {
+        "i": "bone-088",
+        "t": "Left Scaphoid",
+        "d": "Carpal of the left wrist: thumb-side proximal wrist bone."
+      },
+      {
+        "i": "bone-089",
+        "t": "Left Lunate",
+        "d": "Carpal of the left wrist: central proximal wrist bone."
+      },
+      {
+        "i": "bone-090",
+        "t": "Left Triquetrum",
+        "d": "Carpal of the left wrist: little-finger-side proximal wrist bone."
+      },
+      {
+        "i": "bone-091",
+        "t": "Left Pisiform",
+        "d": "Carpal of the left wrist: pea-shaped bone on the palm side of the triquetrum."
+      },
+      {
+        "i": "bone-092",
+        "t": "Left Trapezium",
+        "d": "Carpal of the left wrist: carpal at the base of the thumb."
+      },
+      {
+        "i": "bone-093",
+        "t": "Left Trapezoid",
+        "d": "Carpal of the left wrist: carpal at the base of the index finger."
+      },
+      {
+        "i": "bone-094",
+        "t": "Left Capitate",
+        "d": "Carpal of the left wrist: largest carpal, near the center of the wrist."
+      },
+      {
+        "i": "bone-095",
+        "t": "Left Hamate",
+        "d": "Carpal of the left wrist: carpal on the little-finger side, with a hook-like projection."
+      },
+      {
+        "i": "bone-096",
+        "t": "Left metacarpal 1",
+        "d": "Palm bone 1, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-097",
+        "t": "Left metacarpal 2",
+        "d": "Palm bone 2, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-098",
+        "t": "Left metacarpal 3",
+        "d": "Palm bone 3, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-099",
+        "t": "Left metacarpal 4",
+        "d": "Palm bone 4, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-100",
+        "t": "Left metacarpal 5",
+        "d": "Palm bone 5, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-101",
+        "t": "Left thumb proximal phalanx",
+        "d": "Proximal phalanx of the left thumb, nearest the palm. The thumb has no middle phalanx."
+      },
+      {
+        "i": "bone-102",
+        "t": "Left thumb distal phalanx",
+        "d": "Distal phalanx of the left thumb, at the fingertip. The thumb has no middle phalanx."
+      },
+      {
+        "i": "bone-103",
+        "t": "Left index finger proximal phalanx",
+        "d": "Proximal phalanx of the left index finger, nearest the palm."
+      },
+      {
+        "i": "bone-104",
+        "t": "Left index finger middle phalanx",
+        "d": "Middle phalanx of the left index finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-105",
+        "t": "Left index finger distal phalanx",
+        "d": "Distal phalanx of the left index finger, at the fingertip."
+      },
+      {
+        "i": "bone-106",
+        "t": "Left middle finger proximal phalanx",
+        "d": "Proximal phalanx of the left middle finger, nearest the palm."
+      },
+      {
+        "i": "bone-107",
+        "t": "Left middle finger middle phalanx",
+        "d": "Middle phalanx of the left middle finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-108",
+        "t": "Left middle finger distal phalanx",
+        "d": "Distal phalanx of the left middle finger, at the fingertip."
+      },
+      {
+        "i": "bone-109",
+        "t": "Left ring finger proximal phalanx",
+        "d": "Proximal phalanx of the left ring finger, nearest the palm."
+      },
+      {
+        "i": "bone-110",
+        "t": "Left ring finger middle phalanx",
+        "d": "Middle phalanx of the left ring finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-111",
+        "t": "Left ring finger distal phalanx",
+        "d": "Distal phalanx of the left ring finger, at the fingertip."
+      },
+      {
+        "i": "bone-112",
+        "t": "Left little finger proximal phalanx",
+        "d": "Proximal phalanx of the left little finger, nearest the palm."
+      },
+      {
+        "i": "bone-113",
+        "t": "Left little finger middle phalanx",
+        "d": "Middle phalanx of the left little finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-114",
+        "t": "Left little finger distal phalanx",
+        "d": "Distal phalanx of the left little finger, at the fingertip."
+      },
+      {
+        "i": "bone-115",
+        "t": "Right humerus",
+        "d": "Upper-arm bone extending from shoulder to elbow."
+      },
+      {
+        "i": "bone-116",
+        "t": "Right radius",
+        "d": "Forearm bone on the thumb side; rotates around the ulna during forearm rotation."
+      },
+      {
+        "i": "bone-117",
+        "t": "Right ulna",
+        "d": "Forearm bone on the little-finger side; forms the prominent hinge at the elbow."
+      },
+      {
+        "i": "bone-118",
+        "t": "Right Scaphoid",
+        "d": "Carpal of the right wrist: thumb-side proximal wrist bone."
+      },
+      {
+        "i": "bone-119",
+        "t": "Right Lunate",
+        "d": "Carpal of the right wrist: central proximal wrist bone."
+      },
+      {
+        "i": "bone-120",
+        "t": "Right Triquetrum",
+        "d": "Carpal of the right wrist: little-finger-side proximal wrist bone."
+      },
+      {
+        "i": "bone-121",
+        "t": "Right Pisiform",
+        "d": "Carpal of the right wrist: pea-shaped bone on the palm side of the triquetrum."
+      },
+      {
+        "i": "bone-122",
+        "t": "Right Trapezium",
+        "d": "Carpal of the right wrist: carpal at the base of the thumb."
+      },
+      {
+        "i": "bone-123",
+        "t": "Right Trapezoid",
+        "d": "Carpal of the right wrist: carpal at the base of the index finger."
+      },
+      {
+        "i": "bone-124",
+        "t": "Right Capitate",
+        "d": "Carpal of the right wrist: largest carpal, near the center of the wrist."
+      },
+      {
+        "i": "bone-125",
+        "t": "Right Hamate",
+        "d": "Carpal of the right wrist: carpal on the little-finger side, with a hook-like projection."
+      },
+      {
+        "i": "bone-126",
+        "t": "Right metacarpal 1",
+        "d": "Palm bone 1, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-127",
+        "t": "Right metacarpal 2",
+        "d": "Palm bone 2, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-128",
+        "t": "Right metacarpal 3",
+        "d": "Palm bone 3, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-129",
+        "t": "Right metacarpal 4",
+        "d": "Palm bone 4, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-130",
+        "t": "Right metacarpal 5",
+        "d": "Palm bone 5, numbered from the thumb side (1) to little-finger side (5)."
+      },
+      {
+        "i": "bone-131",
+        "t": "Right thumb proximal phalanx",
+        "d": "Proximal phalanx of the right thumb, nearest the palm. The thumb has no middle phalanx."
+      },
+      {
+        "i": "bone-132",
+        "t": "Right thumb distal phalanx",
+        "d": "Distal phalanx of the right thumb, at the fingertip. The thumb has no middle phalanx."
+      },
+      {
+        "i": "bone-133",
+        "t": "Right index finger proximal phalanx",
+        "d": "Proximal phalanx of the right index finger, nearest the palm."
+      },
+      {
+        "i": "bone-134",
+        "t": "Right index finger middle phalanx",
+        "d": "Middle phalanx of the right index finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-135",
+        "t": "Right index finger distal phalanx",
+        "d": "Distal phalanx of the right index finger, at the fingertip."
+      },
+      {
+        "i": "bone-136",
+        "t": "Right middle finger proximal phalanx",
+        "d": "Proximal phalanx of the right middle finger, nearest the palm."
+      },
+      {
+        "i": "bone-137",
+        "t": "Right middle finger middle phalanx",
+        "d": "Middle phalanx of the right middle finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-138",
+        "t": "Right middle finger distal phalanx",
+        "d": "Distal phalanx of the right middle finger, at the fingertip."
+      },
+      {
+        "i": "bone-139",
+        "t": "Right ring finger proximal phalanx",
+        "d": "Proximal phalanx of the right ring finger, nearest the palm."
+      },
+      {
+        "i": "bone-140",
+        "t": "Right ring finger middle phalanx",
+        "d": "Middle phalanx of the right ring finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-141",
+        "t": "Right ring finger distal phalanx",
+        "d": "Distal phalanx of the right ring finger, at the fingertip."
+      },
+      {
+        "i": "bone-142",
+        "t": "Right little finger proximal phalanx",
+        "d": "Proximal phalanx of the right little finger, nearest the palm."
+      },
+      {
+        "i": "bone-143",
+        "t": "Right little finger middle phalanx",
+        "d": "Middle phalanx of the right little finger, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-144",
+        "t": "Right little finger distal phalanx",
+        "d": "Distal phalanx of the right little finger, at the fingertip."
+      },
+      {
+        "i": "bone-145",
+        "t": "Left Hip bone (coxal bone)",
+        "d": "One half of the pelvic girdle; in adults it is formed by the fused ilium, ischium, and pubis."
+      },
+      {
+        "i": "bone-146",
+        "t": "Right Hip bone (coxal bone)",
+        "d": "One half of the pelvic girdle; in adults it is formed by the fused ilium, ischium, and pubis."
+      },
+      {
+        "i": "bone-147",
+        "t": "Left femur",
+        "d": "Thigh bone; the body’s longest and strongest bone, articulating with hip and knee."
+      },
+      {
+        "i": "bone-148",
+        "t": "Left patella",
+        "d": "Kneecap; a sesamoid bone in the quadriceps tendon that protects the front of the knee."
+      },
+      {
+        "i": "bone-149",
+        "t": "Left tibia",
+        "d": "Shinbone; larger, medial, weight-bearing bone of the lower leg."
+      },
+      {
+        "i": "bone-150",
+        "t": "Left fibula",
+        "d": "Smaller, lateral lower-leg bone that helps stabilize the ankle and provides muscle attachment."
+      },
+      {
+        "i": "bone-151",
+        "t": "Left Talus",
+        "d": "Tarsal of the left foot: ankle bone receiving body weight from the tibia."
+      },
+      {
+        "i": "bone-152",
+        "t": "Left Calcaneus",
+        "d": "Tarsal of the left foot: heel bone and largest tarsal."
+      },
+      {
+        "i": "bone-153",
+        "t": "Left Navicular",
+        "d": "Tarsal of the left foot: boat-shaped tarsal in front of the talus on the medial foot."
+      },
+      {
+        "i": "bone-154",
+        "t": "Left Cuboid",
+        "d": "Tarsal of the left foot: cube-shaped tarsal on the lateral foot."
+      },
+      {
+        "i": "bone-155",
+        "t": "Left Medial cuneiform",
+        "d": "Tarsal of the left foot: cuneiform on the big-toe side of the foot."
+      },
+      {
+        "i": "bone-156",
+        "t": "Left Intermediate cuneiform",
+        "d": "Tarsal of the left foot: middle cuneiform near the base of the second metatarsal."
+      },
+      {
+        "i": "bone-157",
+        "t": "Left Lateral cuneiform",
+        "d": "Tarsal of the left foot: cuneiform near the base of the third metatarsal."
+      },
+      {
+        "i": "bone-158",
+        "t": "Left metatarsal 1",
+        "d": "Foot bone 1, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-159",
+        "t": "Left metatarsal 2",
+        "d": "Foot bone 2, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-160",
+        "t": "Left metatarsal 3",
+        "d": "Foot bone 3, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-161",
+        "t": "Left metatarsal 4",
+        "d": "Foot bone 4, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-162",
+        "t": "Left metatarsal 5",
+        "d": "Foot bone 5, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-163",
+        "t": "Left big toe proximal phalanx",
+        "d": "Proximal phalanx of the left big toe, nearest the metatarsal. The big toe has no middle phalanx."
+      },
+      {
+        "i": "bone-164",
+        "t": "Left big toe distal phalanx",
+        "d": "Distal phalanx of the left big toe, at the tip of the toe. The big toe has no middle phalanx."
+      },
+      {
+        "i": "bone-165",
+        "t": "Left second toe proximal phalanx",
+        "d": "Proximal phalanx of the left second toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-166",
+        "t": "Left second toe middle phalanx",
+        "d": "Middle phalanx of the left second toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-167",
+        "t": "Left second toe distal phalanx",
+        "d": "Distal phalanx of the left second toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-168",
+        "t": "Left third toe proximal phalanx",
+        "d": "Proximal phalanx of the left third toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-169",
+        "t": "Left third toe middle phalanx",
+        "d": "Middle phalanx of the left third toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-170",
+        "t": "Left third toe distal phalanx",
+        "d": "Distal phalanx of the left third toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-171",
+        "t": "Left fourth toe proximal phalanx",
+        "d": "Proximal phalanx of the left fourth toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-172",
+        "t": "Left fourth toe middle phalanx",
+        "d": "Middle phalanx of the left fourth toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-173",
+        "t": "Left fourth toe distal phalanx",
+        "d": "Distal phalanx of the left fourth toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-174",
+        "t": "Left little toe proximal phalanx",
+        "d": "Proximal phalanx of the left little toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-175",
+        "t": "Left little toe middle phalanx",
+        "d": "Middle phalanx of the left little toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-176",
+        "t": "Left little toe distal phalanx",
+        "d": "Distal phalanx of the left little toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-177",
+        "t": "Right femur",
+        "d": "Thigh bone; the body’s longest and strongest bone, articulating with hip and knee."
+      },
+      {
+        "i": "bone-178",
+        "t": "Right patella",
+        "d": "Kneecap; a sesamoid bone in the quadriceps tendon that protects the front of the knee."
+      },
+      {
+        "i": "bone-179",
+        "t": "Right tibia",
+        "d": "Shinbone; larger, medial, weight-bearing bone of the lower leg."
+      },
+      {
+        "i": "bone-180",
+        "t": "Right fibula",
+        "d": "Smaller, lateral lower-leg bone that helps stabilize the ankle and provides muscle attachment."
+      },
+      {
+        "i": "bone-181",
+        "t": "Right Talus",
+        "d": "Tarsal of the right foot: ankle bone receiving body weight from the tibia."
+      },
+      {
+        "i": "bone-182",
+        "t": "Right Calcaneus",
+        "d": "Tarsal of the right foot: heel bone and largest tarsal."
+      },
+      {
+        "i": "bone-183",
+        "t": "Right Navicular",
+        "d": "Tarsal of the right foot: boat-shaped tarsal in front of the talus on the medial foot."
+      },
+      {
+        "i": "bone-184",
+        "t": "Right Cuboid",
+        "d": "Tarsal of the right foot: cube-shaped tarsal on the lateral foot."
+      },
+      {
+        "i": "bone-185",
+        "t": "Right Medial cuneiform",
+        "d": "Tarsal of the right foot: cuneiform on the big-toe side of the foot."
+      },
+      {
+        "i": "bone-186",
+        "t": "Right Intermediate cuneiform",
+        "d": "Tarsal of the right foot: middle cuneiform near the base of the second metatarsal."
+      },
+      {
+        "i": "bone-187",
+        "t": "Right Lateral cuneiform",
+        "d": "Tarsal of the right foot: cuneiform near the base of the third metatarsal."
+      },
+      {
+        "i": "bone-188",
+        "t": "Right metatarsal 1",
+        "d": "Foot bone 1, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-189",
+        "t": "Right metatarsal 2",
+        "d": "Foot bone 2, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-190",
+        "t": "Right metatarsal 3",
+        "d": "Foot bone 3, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-191",
+        "t": "Right metatarsal 4",
+        "d": "Foot bone 4, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-192",
+        "t": "Right metatarsal 5",
+        "d": "Foot bone 5, numbered from the big-toe side (1) to little-toe side (5)."
+      },
+      {
+        "i": "bone-193",
+        "t": "Right big toe proximal phalanx",
+        "d": "Proximal phalanx of the right big toe, nearest the metatarsal. The big toe has no middle phalanx."
+      },
+      {
+        "i": "bone-194",
+        "t": "Right big toe distal phalanx",
+        "d": "Distal phalanx of the right big toe, at the tip of the toe. The big toe has no middle phalanx."
+      },
+      {
+        "i": "bone-195",
+        "t": "Right second toe proximal phalanx",
+        "d": "Proximal phalanx of the right second toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-196",
+        "t": "Right second toe middle phalanx",
+        "d": "Middle phalanx of the right second toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-197",
+        "t": "Right second toe distal phalanx",
+        "d": "Distal phalanx of the right second toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-198",
+        "t": "Right third toe proximal phalanx",
+        "d": "Proximal phalanx of the right third toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-199",
+        "t": "Right third toe middle phalanx",
+        "d": "Middle phalanx of the right third toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-200",
+        "t": "Right third toe distal phalanx",
+        "d": "Distal phalanx of the right third toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-201",
+        "t": "Right fourth toe proximal phalanx",
+        "d": "Proximal phalanx of the right fourth toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-202",
+        "t": "Right fourth toe middle phalanx",
+        "d": "Middle phalanx of the right fourth toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-203",
+        "t": "Right fourth toe distal phalanx",
+        "d": "Distal phalanx of the right fourth toe, at the tip of the toe."
+      },
+      {
+        "i": "bone-204",
+        "t": "Right little toe proximal phalanx",
+        "d": "Proximal phalanx of the right little toe, nearest the metatarsal."
+      },
+      {
+        "i": "bone-205",
+        "t": "Right little toe middle phalanx",
+        "d": "Middle phalanx of the right little toe, between proximal and distal phalanges."
+      },
+      {
+        "i": "bone-206",
+        "t": "Right little toe distal phalanx",
+        "d": "Distal phalanx of the right little toe, at the tip of the toe."
+      }
+    ]
+  }
+}

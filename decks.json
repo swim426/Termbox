@@ -1,0 +1,12 @@
+{
+  "format": "termbox-deck-catalog",
+  "version": 1,
+  "decks": [
+    {
+      "id": "human-skeleton-206",
+      "name": "Human Skeleton — 206 Adult Bones",
+      "description": "206 flashcards covering the bones of the adult human skeleton.",
+      "file": "decks/human-skeleton-206.json"
+    }
+  ]
+}

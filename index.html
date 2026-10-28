@@ -1,0 +1,1072 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Termbox</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap">
+<style>
+/* Layout: one centered column. The five Leitner boxes are the deck's spine; the flashcard is the only raised object. */
+:root{
+  --bg:#EEF1F6; --surface:#FFFFFF; --surface-2:#E4E8F1; --line:#D3D9E5;
+  --ink:#121A2C; --muted:#586379;
+  --accent:#3040D8; --accent-ink:#FFFFFF; --accent-soft:#E2E6FC;
+  --good:#16784A; --on-good:#FFFFFF; --good-soft:#DAF0E5;
+  --bad:#B3361F; --on-bad:#FFFFFF; --bad-soft:#F8DDD6;
+  --b0:#D3D9E5; --b1:#C6CCF5; --b2:#A1AAEF; --b3:#7B87E6; --b4:#5462DE; --b5:#3040D8;
+  --shadow:0 1px 1px rgba(18,26,44,.05),0 18px 36px -18px rgba(18,26,44,.35);
+  --scrim:rgba(10,14,26,.5);
+  --f-serif:"Literata",Georgia,"Times New Roman",serif;
+  --f-ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1120; --surface:#171B2E; --surface-2:#20253B; --line:#2C3350;
+    --ink:#E9ECF6; --muted:#9BA4BC;
+    --accent:#8E9AFF; --accent-ink:#0E1120; --accent-soft:#222956;
+    --good:#4FCB8E; --on-good:#06210F; --good-soft:#12301F;
+    --bad:#FF8573; --on-bad:#2C0B06; --bad-soft:#3A1A16;
+    --b0:#2C3350; --b1:#2F3868; --b2:#434F9C; --b3:#6071D8; --b4:#7E8CF4; --b5:#A3ADFF;
+    --shadow:0 1px 1px rgba(0,0,0,.3),0 18px 36px -18px rgba(0,0,0,.7);
+    --scrim:rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1120; --surface:#171B2E; --surface-2:#20253B; --line:#2C3350;
+  --ink:#E9ECF6; --muted:#9BA4BC;
+  --accent:#8E9AFF; --accent-ink:#0E1120; --accent-soft:#222956;
+  --good:#4FCB8E; --on-good:#06210F; --good-soft:#12301F;
+  --bad:#FF8573; --on-bad:#2C0B06; --bad-soft:#3A1A16;
+  --b0:#2C3350; --b1:#2F3868; --b2:#434F9C; --b3:#6071D8; --b4:#7E8CF4; --b5:#A3ADFF;
+  --shadow:0 1px 1px rgba(0,0,0,.3),0 18px 36px -18px rgba(0,0,0,.7);
+  --scrim:rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-ui);
+  padding-block:0 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+button,input,select,textarea{font-family:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{width:100%;max-width:920px;margin-inline:auto}
+h1{font:600 clamp(28px,4.4vw,38px)/1.12 var(--f-serif);letter-spacing:-.015em;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+h2{font:600 22px/1.25 var(--f-serif);margin:0;text-wrap:balance}
+p{margin:0}
+code{font:500 .9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--surface-2);padding:2px 6px;border-radius:6px;overflow-wrap:anywhere}
+.hint{color:var(--muted);font-size:14px}
+.lede{color:var(--muted);max-width:60ch;margin-top:8px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{display:inline-flex;align-items:flex-end;gap:2px;height:20px}
+.logo i{display:block;width:4px;border-radius:1px}
+.logo i:nth-child(1){height:6px;background:var(--b1)}
+.logo i:nth-child(2){height:10px;background:var(--b2)}
+.logo i:nth-child(3){height:13px;background:var(--b3)}
+.logo i:nth-child(4){height:17px;background:var(--b4)}
+.logo i:nth-child(5){height:20px;background:var(--b5)}
+.wm{font:700 20px/1 var(--f-serif);letter-spacing:-.01em}
+.hright{display:flex;align-items:center;gap:14px}
+.status{font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--good)}
+.status[data-s="saving"]::before{background:var(--b3)}
+.status[data-s="error"]::before{background:var(--bad)}
+@media (max-width:520px){.status{display:none}}
+
+/* buttons */
+.btn{
+  appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  font:600 16px/1 var(--f-ui);min-height:48px;padding:0 20px;border-radius:14px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center;
+}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--accent);padding:0 12px}
+.btn.big{min-height:60px;font-size:18px}
+.btn.good{background:var(--good);border-color:var(--good);color:var(--on-good)}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:var(--on-bad)}
+.btn.danger{color:var(--bad);border-color:var(--bad);background:transparent}
+.btn.danger.armed{background:var(--bad);color:var(--on-bad)}
+
+/* library */
+.titlerow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:22px}
+.tile{display:flex;flex-direction:column;gap:12px;text-align:left;width:100%;min-width:0;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:20px;cursor:pointer;font:inherit}
+.tile:active{background:var(--surface-2)}
+.tile-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.tile-name{font:600 21px/1.2 var(--f-serif);overflow-wrap:anywhere;min-width:0}
+.tile-meta{color:var(--muted);font-size:14px}
+.bar{display:flex;gap:2px;height:10px}
+.bar:empty{background:var(--b0);border-radius:99px}
+.bar i{display:block;border-radius:2px}
+.chip{align-self:flex-start;font:600 13px/1 var(--f-ui);padding:7px 11px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.chip.quiet{background:var(--surface-2);color:var(--muted)}
+.tag{flex:none;font:600 11px/1 var(--f-ui);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:6px;background:var(--surface-2);color:var(--muted)}
+.howto{margin-top:28px;color:var(--muted);font-size:14px;max-width:62ch}
+.sk{min-height:130px;background:var(--surface-2);border-color:transparent;cursor:default}
+@media (prefers-reduced-motion:no-preference){.sk{animation:pulse 1.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.55}}}
+
+/* deck */
+.dtitle{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.banner{margin-top:16px;background:var(--accent-soft);color:var(--ink);border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.banner p{max-width:52ch;min-width:0}
+.boxes{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:20px}
+.bx{background:var(--surface);padding:12px 12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.bx .sw{height:6px;border-radius:3px;margin-bottom:8px}
+.bx .n{font:600 26px/1 var(--f-serif);font-variant-numeric:tabular-nums}
+.bx .l{font-size:13px;font-weight:600;margin-top:4px}
+.bx .i{font-size:12px;color:var(--muted)}
+@media (max-width:560px){.boxes{grid-template-columns:repeat(3,1fr)}}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.actions .btn{flex:1 1 180px}
+.dir{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:14px;padding:4px;gap:4px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 15px/1 var(--f-ui);padding:0 16px;min-height:44px;border-radius:10px;cursor:pointer}
+.seg button[aria-checked="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.sec{margin-top:34px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.addform{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;gap:12px;align-items:end;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px}
+@media (max-width:720px){.addform{grid-template-columns:minmax(0,1fr)}}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font:600 13px/1.2 var(--f-ui);letter-spacing:.04em;color:var(--muted)}
+.opt-note{font-weight:500}
+input,textarea,select{
+  font:16px/1.4 var(--f-ui);color:var(--ink);background:var(--bg);border:1.5px solid var(--line);
+  border-radius:12px;padding:12px 14px;min-height:48px;width:100%;min-width:0;-webkit-appearance:none;appearance:none;
+}
+select{padding-right:34px;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+textarea{resize:vertical}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.search{margin-top:12px}
+.list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface);margin-top:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;width:100%;padding:14px 16px;background:transparent;border:0;border-bottom:1px solid var(--line);font:inherit;color:inherit;cursor:pointer;min-height:64px}
+.row:last-child{border-bottom:0}
+button.row:active{background:var(--surface-2)}
+div.row{cursor:default}
+.row-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.row-t{font:600 17px/1.3 var(--f-serif);overflow-wrap:anywhere}
+.row-d{color:var(--muted);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.pill{flex:none;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.pill::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--bx,var(--b0))}
+.empty{color:var(--muted);padding:18px 4px}
+
+/* session */
+.shead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.count{font:600 15px/1 var(--f-ui);font-variant-numeric:tabular-nums;color:var(--muted)}
+.prog{height:6px;border-radius:99px;background:var(--b0);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+.stage{margin-top:20px;perspective:1600px}
+.card{position:relative;height:clamp(280px,46vh,460px);cursor:pointer}
+.card-inner{position:absolute;inset:0;transition:transform .55s cubic-bezier(.2,.75,.2,1);transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face,.qcard{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:24px 30px;display:flex;flex-direction:column;gap:12px}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.face.back{transform:rotateY(180deg);background:var(--accent-soft)}
+.ftop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.label{font:600 12px/1 var(--f-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fbody{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;justify-content:center}
+.txt{font-family:var(--f-serif);overflow-wrap:anywhere;text-wrap:pretty}
+.txt.is-term{font-weight:600}
+.txt.xl{font-size:clamp(34px,6vw,56px);line-height:1.1;letter-spacing:-.015em}
+.txt.lg{font-size:clamp(26px,4.4vw,38px);line-height:1.2}
+.txt.md{font-size:clamp(20px,3.2vw,27px);line-height:1.35}
+.txt.sm{font-size:18px;line-height:1.45}
+.sact{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.sact .one{grid-column:1/-1}
+.shint{text-align:center;margin-top:12px}
+.qcard{margin-top:20px;min-height:180px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:640px){.opts,.sact{grid-template-columns:1fr}}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;min-height:64px;padding:14px 16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;font:500 17px/1.35 var(--f-ui);cursor:pointer;overflow-wrap:anywhere}
+.opt .k{font-weight:700;color:var(--muted);min-width:1.1em;font-variant-numeric:tabular-nums}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.dim{opacity:.55}
+.fb{margin-top:14px;font-weight:600}
+.fb.good{color:var(--good)}
+.fb.bad{color:var(--bad)}
+
+/* summary */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:22px;border-block:1px solid var(--line)}
+.stat{padding:18px 4px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.stat+.stat{border-left:1px solid var(--line);padding-left:20px}
+.stat .n{font:600 40px/1 var(--f-serif);font-variant-numeric:tabular-nums}
+.stat .l{color:var(--muted);font-size:14px}
+
+/* sheet + toast */
+.scrim{position:fixed;inset:0;z-index:30;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px)}
+.sheet{width:min(560px,100%);max-height:92%;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:24px 24px 0 0;padding:22px 22px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px}
+@media (min-width:700px){.scrim{align-items:center}.sheet{border-radius:24px;margin-block:24px}}
+.sheet-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:10px}
+.inline{flex-direction:row;align-items:center;gap:12px}
+.inline select{width:auto;flex:1}
+hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);max-width:min(92vw,480px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font:500 15px/1.35 var(--f-ui);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:40}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .card-inner{transform:none!important}
+  .face.back{transform:none;visibility:hidden}
+  .card.flipped .face.back{visibility:visible}
+  .card.flipped .face.front{visibility:hidden}
+}
+</style>
+
+<div id="app"></div>
+<div id="sheet" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+const SESSION_MAX = 25, MAX_CARDS = 1500, MAX_BYTES = 240000, MAX_RETRY = 3;
+const INTERVALS = [0, 1, 3, 7, 14, 30];
+const BOX_LABEL = ['New', 'Box 1', 'Box 2', 'Box 3', 'Box 4', 'Box 5'];
+const BOX_SUB = ['Not seen yet', '1 day', '3 days', '1 week', '2 weeks', '1 month'];
+const LS_KEY = 'termbox.decks.v1';
+
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rid = () => Math.random().toString(36).slice(2, 8);
+const plural = (n, w) => n === 1 ? w : w + 's';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function canon(v){
+  if (Array.isArray(v)) return '[' + v.map(canon).join(',') + ']';
+  if (v && typeof v === 'object') return '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + canon(v[k])).join(',') + '}';
+  return JSON.stringify(v);
+}
+function blobSize(o){ try { return new Blob([JSON.stringify(o)]).size; } catch (e) { return JSON.stringify(o).length; } }
+function dayStart(offset){ const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + offset); return d.getTime(); }
+const isDue = c => c.b === 0 || c.u <= Date.now();
+function dueRel(u){ const n = Math.round((u - dayStart(0)) / 86400000); return n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days'; }
+function sizeClass(t){ const n = String(t).length; return n <= 36 ? 'xl' : n <= 110 ? 'lg' : n <= 240 ? 'md' : 'sm'; }
+
+/* ---------- state ---------- */
+let mode = 'init';          // 'db' | 'local'
+let col = null;
+let decks = {};
+let loaded = false;
+let status = 'saved';
+let V = {name: 'library'};
+let S = null;               // study session
+let SH = null;              // open sheet
+let draft = {t: '', d: '', q: ''};
+let lastKey = '';
+let toastTimer = null;
+const sync = {};
+const deleting = new Set();
+// Public deck catalog hosted beside index.html on GitHub Pages.
+let sharedDecks = [];
+let sharedCatalogState = 'loading';
+let sharedCatalogMessage = '';
+let sharedCatalogStarted = false;
+let sharedBusyIndex = -1;
+
+/* ---------- example deck (never saved) ---------- */
+const example = {
+  id: 'example', example: true, name: 'Cell biology', flip: 'term', created: 0, updated: 0,
+  cards: [
+    ['Mitochondrion', 'Organelle that makes most of the cell’s ATP through aerobic respiration.'],
+    ['Ribosome', 'Molecular machine that builds proteins from amino acids, following mRNA instructions.'],
+    ['Golgi apparatus', 'Stack of membranes that modifies, sorts and packages proteins for delivery.'],
+    ['Endoplasmic reticulum', 'Membrane network where proteins are folded (rough) and lipids are made (smooth).'],
+    ['Lysosome', 'Vesicle full of digestive enzymes that breaks down waste and worn-out parts.'],
+    ['Osmosis', 'Movement of water across a semipermeable membrane toward the side with more dissolved solute.'],
+    ['Diffusion', 'Net movement of particles from high to low concentration with no energy input.'],
+    ['Chloroplast', 'Plant organelle where photosynthesis turns light into chemical energy.']
+  ].map(r => ({i: rid() + rid(), t: r[0], d: r[1], b: 0, u: 0, s: 0, l: null}))
+};
+
+function allDecks(){ const l = Object.keys(decks).map(k => decks[k]); return l.length ? l : [example]; }
+function getDeck(id){ if (id === 'example') return Object.keys(decks).length ? null : example; return decks[id] || null; }
+
+/* ---------- data shape ---------- */
+function toDoc(d){
+  return {name: d.name, flip: d.flip, created: d.created, updated: d.updated,
+    cards: d.cards.map(c => ({i: c.i, t: c.t, d: c.d, b: c.b, u: c.u, s: c.s, l: c.l}))};
+}
+function fromDoc(id, data){
+  const cards = Array.isArray(data.cards) ? data.cards : [];
+  return {
+    id, name: typeof data.name === 'string' && data.name ? data.name : 'Untitled deck',
+    flip: data.flip === 'def' ? 'def' : 'term', created: +data.created || 0, updated: +data.updated || 0,
+    cards: cards.filter(c => c && typeof c.t === 'string').map(c => ({
+      i: typeof c.i === 'string' && c.i ? c.i : rid() + rid(), t: c.t, d: typeof c.d === 'string' ? c.d : '',
+      b: Math.min(5, Math.max(0, c.b | 0)), u: +c.u || 0, s: c.s | 0, l: c.l === 'm' || c.l === 'g' ? c.l : null
+    })),
+    _sig: canon(data)
+  };
+}
+function counts(d){
+  const n = [0, 0, 0, 0, 0, 0]; let due = 0, missed = 0;
+  d.cards.forEach(c => { n[c.b]++; if (isDue(c)) due++; if (c.l === 'm') missed++; });
+  return {n, due, missed, total: d.cards.length};
+}
+
+/* ---------- storage ---------- */
+function loadLocal(){
+  try {
+    const raw = localStorage.getItem(LS_KEY); if (!raw) return {};
+    const o = JSON.parse(raw), out = {};
+    Object.keys(o).forEach(id => { out[id] = fromDoc(id, o[id]); });
+    return out;
+  } catch (e) { return {}; }
+}
+function saveLocal(){
+  try {
+    const o = {}; Object.keys(decks).forEach(id => { o[id] = toDoc(decks[id]); });
+    localStorage.setItem(LS_KEY, JSON.stringify(o)); setStatus('saved');
+  } catch (e) { setStatus('error'); toast('Couldn’t save in this browser. Private windows can block saving.'); }
+}
+function anyPending(){ return Object.keys(sync).some(k => sync[k].busy || sync[k].dirty || sync[k].timer); }
+function saveErr(e){
+  const c = e && e.code;
+  if (c === 'quota_exceeded') return 'Storage is full. Delete a deck or split this one.';
+  if (c === 'invalid_argument') return 'This deck is too large to save, or saving isn’t allowed here.';
+  return 'Couldn’t save your changes. They’ll retry on your next edit.';
+}
+function queueSave(id, now){
+  const s = sync[id] || (sync[id] = {});
+  s.dirty = true; clearTimeout(s.timer);
+  s.timer = setTimeout(() => { s.timer = null; flush(id); }, now ? 0 : 700);
+  setStatus('saving');
+}
+async function flush(id){
+  const s = sync[id]; if (!s) return;
+  if (s.busy) { s.again = true; return; }
+  const d = decks[id]; if (!d) { s.dirty = false; return; }
+  s.busy = true; s.dirty = false; s.timer = null;
+  const doc = toDoc(d); d._sig = canon(doc);
+  let ok = true;
+  try { await col.doc(id).set(doc); }
+  catch (e) { ok = false; s.dirty = true; setStatus('error'); toast(saveErr(e)); }
+  s.busy = false;
+  if (ok && (s.again || s.dirty)) { s.again = false; flush(id); return; }
+  s.again = false;
+  if (ok && !anyPending()) setStatus('saved');
+}
+function flushAll(){ Object.keys(sync).forEach(id => { const s = sync[id]; if (s && (s.dirty || s.timer)) { clearTimeout(s.timer); s.timer = null; flush(id); } }); }
+function persist(d, now){
+  if (!d || d.example) return;
+  d.updated = Date.now();
+  if (mode === 'local') saveLocal(); else queueSave(d.id, now);
+}
+async function removeDeck(id){
+  delete decks[id];
+  if (mode === 'local') { saveLocal(); return; }
+  deleting.add(id);
+  const s = sync[id]; if (s) { clearTimeout(s.timer); s.timer = null; s.dirty = false; }
+  try { await col.doc(id).delete(); } catch (e) { toast('Couldn’t delete the deck. Try again.'); }
+  deleting.delete(id);
+}
+function onSnap(snap){
+  const next = {}; let changed = false;
+  snap.docs.forEach(ds => {
+    const id = ds.id; if (deleting.has(id)) return;
+    const loc = decks[id], st = sync[id];
+    if (loc && st && (st.dirty || st.busy || st.timer)) { next[id] = loc; return; }
+    const data = ds.data(); if (!data) return;
+    const sig = canon(data);
+    if (loc && loc._sig === sig) { next[id] = loc; return; }
+    next[id] = fromDoc(id, data); changed = true;
+  });
+  Object.keys(decks).forEach(id => {
+    if (id in next) return;
+    const st = sync[id];
+    if (st && (st.dirty || st.busy || st.timer)) next[id] = decks[id];
+    else if (!deleting.has(id)) changed = true;
+  });
+  decks = next;
+  if (!loaded) { loaded = true; route(); return; }
+  if (changed) refresh();
+}
+function setStatus(s){
+  status = s; const el = $('#status');
+  if (el) { el.dataset.s = s; el.textContent = statusText(); }
+}
+function statusText(){
+  return status === 'saving' ? 'Saving…' : status === 'error' ? 'Couldn’t save' : (mode === 'db' ? 'Saved to your account' : 'Saved in this browser');
+}
+function statusHtml(){ return '<span class="status" id="status" data-s="' + status + '">' + statusText() + '</span>'; }
+function toast(msg){
+  const el = $('#toast'); el.textContent = msg; el.classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 3200);
+}
+
+/* ---------- parsing ---------- */
+const SEP = {tab: ['\t'], comma: [','], dash: [' — ', ' – ', ' - ', '—', '–'], colon: [':'], semi: [';'], pipe: ['|']};
+const AUTO = ['\t', ' | ', ' — ', ' – ', ' - ', ' :: ', ': ', ';', ','];
+function splitLine(line, sep){
+  const list = sep === 'auto' ? AUTO : (SEP[sep] || AUTO);
+  for (const s of list) {
+    const i = line.indexOf(s);
+    if (i > 0) { const t = line.slice(0, i).trim(), d = line.slice(i + s.length).trim(); if (t && d) return [t, d]; }
+  }
+  return null;
+}
+function parseTerms(text, sep){
+  const cards = []; let skipped = 0;
+  String(text || '').split(/\r?\n/).forEach(raw => {
+    const line = raw.replace(/^\s*(?:[-*•]|\d+[.)])\s+/, '').trim();
+    if (!line) return;
+    const r = splitLine(line, sep);
+    if (r) cards.push({t: r[0], d: r[1]}); else skipped++;
+  });
+  return {cards, skipped};
+}
+function addCards(d, list){
+  const have = new Set(d.cards.map(c => c.t.trim().toLowerCase()));
+  const fresh = []; let dupes = 0;
+  list.forEach(r => {
+    const k = r.t.toLowerCase();
+    if (have.has(k)) { dupes++; return; }
+    have.add(k); fresh.push({i: rid() + rid(), t: r.t, d: r.d, b: 0, u: 0, s: 0, l: null});
+  });
+  if (d.cards.length + fresh.length > MAX_CARDS) return {added: 0, dupes, error: 'A deck holds up to ' + MAX_CARDS + ' cards. Start a second deck for the rest.'};
+  const before = d.cards; d.cards = before.concat(fresh);
+  if (blobSize(toDoc(d)) > MAX_BYTES) { d.cards = before; return {added: 0, dupes, error: 'That would make the deck too large to save. Try a shorter list or split it into two decks.'}; }
+  return {added: fresh.length, dupes};
+}
+
+/* ---------- study logic ---------- */
+function buildQueue(d, pool, only){
+  let cards = d.cards;
+  if (only) { const set = new Set(only); cards = cards.filter(c => set.has(c.i)); }
+  else if (pool === 'missed') cards = cards.filter(c => c.l === 'm');
+  else if (pool === 'due') cards = cards.filter(isDue);
+  let ordered;
+  if (pool === 'all' && !only) ordered = shuffle(cards).sort((a, b) => a.b - b.b);
+  else {
+    const learn = cards.filter(c => c.b > 0).sort((a, b) => a.u - b.u);
+    ordered = learn.concat(shuffle(cards.filter(c => c.b === 0)));
+  }
+  return shuffle(ordered.slice(0, SESSION_MAX)).map(c => c.i);
+}
+function makeOptions(d, c){
+  const ans = d.flip === 'def' ? c.t : c.d;
+  const seen = new Set([ans.trim().toLowerCase()]); const wrong = [];
+  shuffle(d.cards.filter(x => x.i !== c.i)).forEach(x => {
+    if (wrong.length >= 3) return;
+    const t = d.flip === 'def' ? x.t : x.d, k = t.trim().toLowerCase();
+    if (!t || seen.has(k)) return; seen.add(k); wrong.push({text: t, ok: false});
+  });
+  return shuffle([{text: ans, ok: true}].concat(wrong));
+}
+function startSession(id, m, pool, only){
+  const d = getDeck(id); if (!d) return;
+  const ids = buildQueue(d, pool, only);
+  if (!ids.length) { toast('There are no cards to study here yet.'); return; }
+  S = {deckId: id, mode: m, pool, queue: ids, pos: 0, flipped: false, revealed: false, graded: new Set(),
+    got: 0, missed: new Set(), retries: {}, dueSet: new Set(d.cards.filter(isDue).map(c => c.i)), picked: null, opts: null, done: false};
+  prepareCard(); render();
+}
+function curCard(){ const d = getDeck(S.deckId); return d ? (d.cards.find(c => c.i === S.queue[S.pos]) || null) : null; }
+function prepareCard(){
+  while (S.pos < S.queue.length && !curCard()) S.pos++;
+  if (S.pos >= S.queue.length) { finish(); return; }
+  S.flipped = false; S.revealed = false; S.picked = null;
+  S.opts = S.mode === 'quiz' ? makeOptions(getDeck(S.deckId), curCard()) : null;
+}
+function grade(ok){
+  const d = getDeck(S.deckId), c = curCard(); if (!d || !c) return;
+  const id = c.i, first = !S.graded.has(id);
+  c.s++;
+  if (first) {
+    S.graded.add(id);
+    if (ok) {
+      S.got++; c.l = 'g';
+      if (S.dueSet.has(id)) { c.b = c.b === 0 ? 2 : Math.min(5, c.b + 1); c.u = dayStart(INTERVALS[c.b]); }
+    } else {
+      S.missed.add(id); c.l = 'm'; c.b = 1; c.u = dayStart(INTERVALS[1]);
+    }
+  }
+  if (!ok) { S.retries[id] = (S.retries[id] || 0) + 1; if (S.retries[id] <= MAX_RETRY) S.queue.push(id); }
+  persist(d);
+}
+function advance(){ S.pos++; prepareCard(); if (S) render(); }
+function finish(){ S.done = true; const d = getDeck(S.deckId); if (d && !d.example && mode === 'db') { const s = sync[d.id]; if (s && (s.dirty || s.timer)) { clearTimeout(s.timer); s.timer = null; flush(d.id); } } }
+
+/* ---------- views ---------- */
+function top(left, right){ return '<header class="top"><div class="wrap">' + left + right + '</div></header>'; }
+function brand(){ return '<div class="brand"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="wm">Termbox</span></div>'; }
+
+function loadingHtml(){
+  return top(brand(), '') + '<main class="wrap"><div class="grid" aria-busy="true"><div class="tile sk"></div><div class="tile sk"></div></div><p class="hint" style="margin-top:16px">Loading your decks…</p></main>';
+}
+
+function tileHtml(d){
+  const c = counts(d);
+  const segs = c.total ? c.n.map((k, i) => k ? '<i style="flex:' + k + ';background:var(--b' + i + ')"></i>' : '').join('') : '';
+  const chip = !c.total ? '<span class="chip quiet">Empty</span>' : c.due ? '<span class="chip">' + c.due + ' to study</span>' : '<span class="chip quiet">Caught up</span>';
+  return '<button class="tile" data-act="open" data-id="' + esc(d.id) + '">' +
+    '<span class="tile-head"><span class="tile-name">' + esc(d.name) + '</span>' + (d.example ? '<span class="tag">Example</span>' : '') + '</span>' +
+    '<span class="tile-meta">' + c.total + ' ' + plural(c.total, 'card') + (c.n[5] ? ' · ' + c.n[5] + ' mastered' : '') + '</span>' +
+    '<span class="bar" aria-hidden="true">' + segs + '</span>' + chip + '</button>';
+}
+function sharedLibraryHtml(){
+  let body = '';
+  if (sharedCatalogState === 'loading') {
+    body = '<p class="hint">Loading shared decks…</p>';
+  } else if (sharedCatalogState === 'error') {
+    body = '<p class="hint">' + esc(sharedCatalogMessage || 'The shared deck list could not be loaded. Check your internet connection and try again.') + '</p>';
+  } else if (!sharedDecks.length) {
+    body = '<p class="hint">No shared decks have been published yet.</p>';
+  } else {
+    body = '<div class="grid">' + sharedDecks.map((d, i) => {
+      const installed = !!decks[d.id];
+      const busy = sharedBusyIndex === i;
+      return '<article class="tile"><span class="tile-head"><span class="tile-name">' + esc(d.name) + '</span>' +
+        (installed ? '<span class="tag">Added</span>' : '') + '</span>' +
+        '<span class="tile-meta">' + esc(d.description || 'Shared flashcard deck') + '</span>' +
+        '<button class="btn primary" data-act="shared-import" data-index="' + i + '"' + (busy ? ' disabled' : '') + '>' +
+        (busy ? 'Loading…' : installed ? 'Update deck' : 'Add deck') + '</button></article>';
+    }).join('') + '</div>';
+  }
+  return '<section class="sec" id="shared-deck-library"><div class="sec-head"><h2>Shared deck library</h2><button class="btn" data-act="shared-refresh">Refresh</button></div>' +
+    '<p class="hint">Decks published by the Termbox owner. Adding or updating a deck keeps your existing study progress for matching cards.</p>' + body + '</section>';
+}
+async function loadSharedCatalog(force){
+  if (sharedCatalogStarted && !force) return;
+  sharedCatalogStarted = true;
+  sharedCatalogState = 'loading'; sharedCatalogMessage = '';
+  if (V.name === 'library' && loaded && !S) render();
+  try {
+    const url = new URL('decks.json', window.location.href);
+    url.hash = '';
+    const response = await fetch(url.href, {cache: 'no-store'});
+    if (!response.ok) throw new Error('Could not load decks.json (' + response.status + ').');
+    const catalog = await response.json();
+    if (!catalog || catalog.format !== 'termbox-deck-catalog' || catalog.version !== 1 || !Array.isArray(catalog.decks)) throw new Error('The shared deck catalog has an invalid format.');
+    sharedDecks = catalog.decks.filter(d => d && typeof d.id === 'string' && d.id && typeof d.name === 'string' && typeof d.file === 'string' && d.file && !d.file.startsWith('/') && !d.file.includes('..') && !/^https?:/i.test(d.file)).map(d => ({id:d.id, name:d.name, description:typeof d.description === 'string' ? d.description : '', file:d.file}));
+    sharedCatalogState = 'ready';
+  } catch (e) {
+    sharedDecks = []; sharedCatalogState = 'error';
+    sharedCatalogMessage = location.protocol === 'file:' ? 'The shared library works after Termbox is hosted online; browsers block this catalog when the HTML is opened directly as a local file.' : (e && e.message ? e.message : 'Could not load the shared deck list.');
+  }
+  if (loaded && !S && V.name !== 'deck') render();
+}
+async function importSharedDeck(index){
+  const entry = sharedDecks[index];
+  if (!entry || sharedBusyIndex !== -1) return;
+  sharedBusyIndex = index; render();
+  try {
+    const url = new URL(entry.file, new URL('.', window.location.href));
+    url.hash = '';
+    if (url.origin !== window.location.origin) throw new Error('Shared deck files must be hosted alongside this website.');
+    const response = await fetch(url.href, {cache:'no-store'});
+    if (!response.ok) throw new Error('Could not download “' + entry.name + '” (' + response.status + ').');
+    const data = await response.json();
+    if (!data || data.format !== 'termbox-deck' || data.version !== 1 || !data.deck || data.deck.id !== entry.id) throw new Error('The deck file does not match its catalog entry. Check the ID in decks.json.');
+    const fileName = entry.file.split('/').pop() || 'shared-deck.json';
+    await importDeck(new File([JSON.stringify(data)], fileName, {type:'application/json'}));
+  } catch (e) {
+    toast(e && e.message ? e.message : 'Could not import that shared deck.');
+  } finally {
+    sharedBusyIndex = -1;
+    if (!S && V.name !== 'deck') render();
+  }
+}
+function libraryHtml(){
+  const list = allDecks().slice().sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  const onlyExample = list.length === 1 && list[0].example;
+  return top(brand(), statusHtml()) +
+    '<main class="wrap"><div class="titlerow"><h1>Your decks</h1><button class="btn primary" data-act="new-deck">New deck</button></div>' +
+    '<div class="actions"><button class="btn" data-act="deck-import">Import deck</button><button class="btn" data-act="backup-export">Export backup</button><button class="btn" data-act="backup-import">Import backup</button></div>' +
+    '<p class="hint" style="margin-top:8px">Use deck files to move flashcards between devices without replacing study progress. Backups include progress.</p>' +
+    '<input id="backup-file" type="file" accept=".json,application/json" hidden><input id="deck-file" type="file" accept=".json,application/json" hidden>' +
+    (onlyExample ? '<p class="lede">You have no decks yet. Try the example below, or make your own by pasting a list of terms.</p>' : '') +
+    '<div class="grid">' + list.map(tileHtml).join('') + '</div>' +
+    sharedLibraryHtml() +
+    '<p class="howto">Cards you get right come back after 1, 3, 7, 14, then 30 days. A missed card drops back to box 1.</p></main>';
+}
+
+function rowsHtml(d, q){
+  const qq = (q || '').trim().toLowerCase();
+  const cards = qq ? d.cards.filter(c => c.t.toLowerCase().indexOf(qq) >= 0 || c.d.toLowerCase().indexOf(qq) >= 0) : d.cards;
+  if (!cards.length) return '<p class="empty">' + (qq ? 'No cards match your search.' : 'No cards yet.') + '</p>';
+  return '<div class="list">' + cards.map(c => {
+    const inner = '<span class="row-main"><span class="row-t">' + esc(c.t) + '</span><span class="row-d">' + esc(c.d) + '</span></span>' +
+      '<span class="pill" style="--bx:var(--b' + c.b + ')">' + BOX_LABEL[c.b] + '</span>';
+    return d.example ? '<div class="row">' + inner + '</div>' : '<button class="row" data-act="edit-card" data-id="' + esc(c.i) + '">' + inner + '</button>';
+  }).join('') + '</div>';
+}
+
+function deckHtml(d){
+  const c = counts(d), ex = !!d.example;
+  const left = '<button class="btn ghost" data-act="back" aria-label="Back to all decks">‹ Decks</button>';
+  const right = ex ? statusHtml() : '<div class="hright">' + statusHtml() + '<button class="btn" data-act="settings">Deck settings</button></div>';
+  const boxes = c.n.map((k, i) => '<div class="bx"><span class="sw" style="background:var(--b' + i + ')"></span><span class="n">' + k + '</span><span class="l">' + BOX_LABEL[i] + '</span><span class="i">' + BOX_SUB[i] + '</span></div>').join('');
+  let acts = '', note = '';
+  if (c.total) {
+    const studyN = Math.min(c.due, SESSION_MAX);
+    if (c.due) {
+      acts += '<button class="btn primary big" data-act="start" data-mode="flip" data-pool="due">Study ' + studyN + ' ' + plural(studyN, 'card') + '</button>';
+      if (c.due > SESSION_MAX) note = c.due + ' cards are waiting. Each session covers up to ' + SESSION_MAX + '.';
+    } else {
+      acts += '<button class="btn primary big" data-act="start" data-mode="flip" data-pool="all">Practice ' + Math.min(c.total, SESSION_MAX) + ' ' + plural(Math.min(c.total, SESSION_MAX), 'card') + '</button>';
+      note = 'You’re caught up. Practicing early keeps a card in its box when you get it right.';
+    }
+    acts += '<button class="btn big" data-act="start" data-mode="quiz" data-pool="' + (c.due ? 'due' : 'all') + '"' + (c.total < 2 ? ' disabled' : '') + '>Quiz me</button>';
+    if (c.missed) acts += '<button class="btn big" data-act="start" data-mode="flip" data-pool="missed">Review missed (' + c.missed + ')</button>';
+  } else if (!ex) note = 'Add your first terms below, or paste a list to import them at once.';
+
+  const dir = c.total ? '<div class="dir"><span class="hint">Show first</span><div class="seg" role="radiogroup" aria-label="Which side to show first">' +
+    '<button role="radio" aria-checked="' + (d.flip === 'term') + '" data-act="set-flip" data-v="term">Term</button>' +
+    '<button role="radio" aria-checked="' + (d.flip === 'def') + '" data-act="set-flip" data-v="def">Definition</button></div></div>' : '';
+
+  const banner = ex ? '<div class="banner"><p>This is an example deck, so changes here aren’t saved. Make your own to start building a real study history.</p><button class="btn primary" data-act="new-deck">New deck</button></div>' : '';
+
+  const add = ex ? '' :
+    '<form class="addform" data-form="add-card" autocomplete="off">' +
+      '<div class="field"><label for="nt">Term</label><input id="nt" maxlength="200" value="' + esc(draft.t) + '"></div>' +
+      '<div class="field"><label for="nd">Definition</label><textarea id="nd" rows="2" maxlength="2000">' + esc(draft.d) + '</textarea></div>' +
+      '<button class="btn primary" type="submit">Add card</button></form>';
+  const search = c.total > 6 ? '<input class="search" id="q" type="search" placeholder="Search this deck" value="' + esc(draft.q) + '" aria-label="Search cards">' : '';
+
+  return top(left, right) +
+    '<main class="wrap"><div class="dtitle"><h1>' + esc(d.name) + '</h1>' + (ex ? '<span class="tag">Example</span>' : '') + '</div>' +
+    '<p class="hint" style="margin-top:6px">' + c.total + ' ' + plural(c.total, 'card') + '</p>' + banner +
+    (c.total ? '<div class="boxes" role="group" aria-label="Cards in each Leitner box">' + boxes + '</div>' : '') +
+    (acts ? '<div class="actions">' + acts + '</div>' : '') +
+    (note ? '<p class="hint" style="margin-top:12px">' + esc(note) + '</p>' : '') + dir +
+    '<section class="sec"><div class="sec-head"><h2>Cards</h2>' + (ex ? '' : '<div class="actions"><button class="btn" data-act="deck-export">Export deck</button><button class="btn" data-act="import">Paste terms</button></div>') + '</div>' +
+    add + search + '<div id="cardlist">' + rowsHtml(d, draft.q) + '</div></section></main>';
+}
+
+function face(label, text, cls, c){
+  return '<div class="face ' + cls + '"><div class="ftop"><span class="label">' + label + '</span><span class="pill" style="--bx:var(--b' + c.b + ')">' + BOX_LABEL[c.b] + '</span></div>' +
+    '<div class="fbody"><div class="txt ' + sizeClass(text) + (label === 'Term' ? ' is-term' : '') + '">' + esc(text) + '</div></div></div>';
+}
+function sessionHtml(){
+  const d = getDeck(S.deckId), c = curCard();
+  const retry = S.graded.has(c.i);
+  const head = top('<button class="btn ghost" data-act="done">Done</button>',
+    '<span class="count">' + (retry ? 'Second look · ' : '') + (S.pos + 1) + ' of ' + S.queue.length + '</span>');
+  const prog = '<div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="' + S.queue.length + '" aria-valuenow="' + S.pos + '"><i style="width:' + Math.round(S.pos / S.queue.length * 100) + '%"></i></div>';
+  if (S.mode === 'quiz') {
+    const q = d.flip === 'def' ? ['Definition', c.d] : ['Term', c.t];
+    const answered = S.picked != null;
+    const opts = S.opts.map((o, i) => {
+      let cls = 'opt';
+      if (answered) cls += o.ok ? ' correct' : (i === S.picked ? ' wrong' : ' dim');
+      return '<button class="' + cls + '" data-act="pick" data-i="' + i + '"' + (answered ? ' disabled' : '') + '><span class="k">' + (i + 1) + '</span><span>' + esc(o.text) + '</span></button>';
+    }).join('');
+    let foot = '';
+    if (answered) {
+      const ok = S.opts[S.picked].ok, last = S.pos + 1 >= S.queue.length;
+      foot = '<p class="fb ' + (ok ? 'good' : 'bad') + '">' + (ok ? 'Correct' : 'Not quite. The right answer is highlighted.') + '</p>' +
+        '<div class="sact"><button class="btn primary big one" data-act="next">' + (last ? 'Finish' : 'Next') + '</button></div>';
+    } else foot = '<p class="hint shint">Pick an answer, or press 1 to ' + S.opts.length + '</p>';
+    return head + '<main class="wrap">' + prog + '<div class="qcard"><div class="ftop"><span class="label">' + q[0] + '</span><span class="pill" style="--bx:var(--b' + c.b + ')">' + BOX_LABEL[c.b] + '</span></div>' +
+      '<div class="txt ' + sizeClass(q[1]) + (q[0] === 'Term' ? ' is-term' : '') + '">' + esc(q[1]) + '</div></div><div class="opts">' + opts + '</div>' + foot + '</main>';
+  }
+  const fr = d.flip === 'def' ? ['Definition', c.d] : ['Term', c.t];
+  const bk = d.flip === 'def' ? ['Term', c.t] : ['Definition', c.d];
+  return head + '<main class="wrap">' + prog +
+    '<div class="stage"><div class="card' + (S.flipped ? ' flipped' : '') + '" id="card" data-act="flip" role="button" tabindex="0" aria-label="Flip card"><div class="card-inner">' +
+    face(fr[0], fr[1], 'front', c) + face(bk[0], bk[1], 'back', c) + '</div></div></div><div id="sact">' + flipActions() + '</div></main>';
+}
+function flipActions(){
+  if (!S.revealed) return '<div class="sact"><button class="btn primary big one" data-act="flip">Show answer</button></div><p class="hint shint">Tap the card or press Space</p>';
+  return '<div class="sact"><button class="btn bad big" data-act="missed">Missed it</button><button class="btn good big" data-act="got">Got it</button></div><p class="hint shint">Left arrow for missed, right arrow for got it</p>';
+}
+function summaryHtml(){
+  const d = getDeck(S.deckId), n = S.graded.size, miss = S.missed.size;
+  const rows = Array.from(S.missed).map(id => d && d.cards.find(c => c.i === id)).filter(Boolean);
+  const cc = d ? counts(d) : {due: 0};
+  const early = S.pool === 'all' && Array.from(S.graded).some(id => !S.dueSet.has(id));
+  let acts = '';
+  if (miss) acts += '<button class="btn big" data-act="again-missed">Review missed (' + miss + ')</button>';
+  if (cc.due) acts += '<button class="btn primary big" data-act="start" data-mode="' + S.mode + '" data-pool="due">Study ' + Math.min(cc.due, SESSION_MAX) + ' more</button>';
+  acts += '<button class="btn big" data-act="done">Back to deck</button>';
+  return top('<span></span>', '<span></span>') +
+    '<main class="wrap"><h1>Session complete</h1>' +
+    '<p class="lede">' + (miss ? 'Missed cards come back tomorrow. You can run them again now.' : 'Every card was right on the first try.') + '</p>' +
+    '<div class="stats"><div class="stat"><span class="n">' + n + '</span><span class="l">Studied</span></div><div class="stat"><span class="n">' + S.got + '</span><span class="l">Right first time</span></div><div class="stat"><span class="n">' + miss + '</span><span class="l">Missed</span></div></div>' +
+    (rows.length ? '<section class="sec"><div class="sec-head"><h2>Missed cards</h2></div><div class="list">' + rows.map(c => '<div class="row"><span class="row-main"><span class="row-t">' + esc(c.t) + '</span><span class="row-d">' + esc(c.d) + '</span></span></div>').join('') + '</div></section>' : '') +
+    '<div class="actions">' + acts + '</div>' +
+    (early ? '<p class="hint" style="margin-top:12px">Cards that weren’t due yet stay in their box when you get them right.</p>' : '') + '</main>';
+}
+
+function render(){
+  const app = $('#app');
+  const y = window.scrollY;
+  let html, key;
+  if (!loaded) { html = loadingHtml(); key = 'load'; }
+  else if (S && S.done) { html = summaryHtml(); key = 'sum'; }
+  else if (S) { html = sessionHtml(); key = 'sess' + S.pos; }
+  else if (V.name === 'deck' && getDeck(V.id)) { html = deckHtml(getDeck(V.id)); key = 'deck' + V.id; }
+  else { V = {name: 'library'}; html = libraryHtml(); key = 'lib'; }
+  app.innerHTML = html;
+  try { window.scrollTo(0, key === lastKey ? y : 0); } catch (e) {}
+  lastKey = key;
+}
+function refresh(){ if (S) return; render(); }
+function hashFor(v){ return v.name === 'deck' ? 'deck-' + v.id : 'library'; }
+function route(){
+  if (!loaded) return;
+  const h = (location.hash || '').slice(1);
+  if (h.indexOf('deck-') === 0 && getDeck(h.slice(5))) V = {name: 'deck', id: h.slice(5)}; else V = {name: 'library'};
+  S = null; render();
+}
+function go(v){
+  if (!(v.name === 'deck' && V.name === 'deck' && v.id === V.id)) draft = {t: '', d: '', q: ''};
+  V = v; S = null; closeSheet(); render();
+  try { const h = hashFor(V); if ((location.hash || '#library').slice(1) !== h) location.hash = h; } catch (e) {}
+}
+
+/* ---------- sheets ---------- */
+function sepSelect(){
+  return '<div class="field inline"><label for="ss">Separator</label><select id="ss"><option value="auto">Detect automatically</option><option value="tab">Tab</option><option value="comma">Comma</option><option value="dash">Dash</option><option value="colon">Colon</option><option value="semi">Semicolon</option><option value="pipe">Pipe ( | )</option></select></div>';
+}
+const PASTE_HINT = '<p class="hint">One card per line: the term, a tab or dash, then the definition. For example <code>Mitosis - cell division that makes two identical cells</code></p>';
+function sheetBody(){
+  const d = V.name === 'deck' ? getDeck(V.id) : null;
+  if (SH.type === 'new') return '<form data-form="new" class="stack" style="gap:16px"><h2>New deck</h2>' +
+    '<div class="field"><label for="sn">Deck name</label><input id="sn" maxlength="60" required data-autofocus autocomplete="off" placeholder="Pharmacology, chapter 4"></div>' +
+    '<div class="field"><label for="st">Terms to add now <span class="opt-note">(optional)</span></label><textarea id="st" rows="7" placeholder="Mitosis - cell division that makes two identical cells&#10;Osmosis - movement of water across a membrane"></textarea></div>' +
+    PASTE_HINT + sepSelect() + '<p class="hint" id="sp" aria-live="polite"></p>' +
+    '<div class="sheet-actions"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn primary" type="submit">Create deck</button></div></form>';
+  if (SH.type === 'import') return '<form data-form="import" class="stack" style="gap:16px"><h2>Paste terms</h2>' +
+    '<div class="field"><label for="st">Terms</label><textarea id="st" rows="9" data-autofocus></textarea></div>' +
+    PASTE_HINT + sepSelect() + '<p class="hint" id="sp" aria-live="polite"></p>' +
+    '<div class="sheet-actions"><button type="button" class="btn" data-act="close">Cancel</button><button class="btn primary" type="submit">Add cards</button></div></form>';
+  if (SH.type === 'edit') {
+    const c = d && d.cards.find(x => x.i === SH.cardId); if (!c) return '<p>This card is no longer here.</p><div class="sheet-actions"><button class="btn" data-act="close">Close</button></div>';
+    return '<form data-form="edit" class="stack" style="gap:16px"><h2>Edit card</h2>' +
+      '<div class="field"><label for="et">Term</label><input id="et" maxlength="200" required value="' + esc(c.t) + '" data-autofocus></div>' +
+      '<div class="field"><label for="ed">Definition</label><textarea id="ed" rows="4" maxlength="2000" required>' + esc(c.d) + '</textarea></div>' +
+      '<p class="hint">' + (c.b === 0 ? 'New card. Not studied yet.' : BOX_LABEL[c.b] + '. Next review ' + dueRel(c.u) + '.') + '</p>' +
+      '<div class="sheet-actions"><button type="button" class="btn danger' + (SH.confirm ? ' armed' : '') + '" data-act="del-card">' + (SH.confirm ? 'Tap again to delete' : 'Delete card') + '</button>' +
+      '<button type="button" class="btn" data-act="close">Cancel</button><button class="btn primary" type="submit">Save</button></div></form>';
+  }
+  if (SH.type === 'settings') return '<form data-form="rename" class="stack" style="gap:16px"><h2>Deck settings</h2>' +
+    '<div class="field"><label for="rn">Deck name</label><input id="rn" maxlength="60" required value="' + esc(d ? d.name : '') + '"></div>' +
+    '<div class="sheet-actions"><button class="btn primary" type="submit">Save name</button></div></form><hr class="sep">' +
+    '<div class="stack"><button class="btn" data-act="export">Export as text</button>' +
+    '<button class="btn danger' + (SH.confirm === 'reset' ? ' armed' : '') + '" data-act="reset">' + (SH.confirm === 'reset' ? 'Tap again to reset all progress' : 'Reset progress') + '</button>' +
+    '<button class="btn danger' + (SH.confirm === 'del' ? ' armed' : '') + '" data-act="del-deck">' + (SH.confirm === 'del' ? 'Tap again to delete this deck' : 'Delete deck') + '</button></div>' +
+    '<div class="sheet-actions"><button class="btn" data-act="close">Close</button></div>';
+  if (SH.type === 'export') {
+    const txt = d ? d.cards.map(c => c.t.replace(/\t/g, ' ') + '\t' + c.d.replace(/[\t\r\n]+/g, ' ')).join('\n') : '';
+    return '<div class="stack" style="gap:16px"><h2>Export as text</h2><div class="field"><label for="ex">One card per line, term and definition separated by a tab</label><textarea id="ex" rows="9" readonly>' + esc(txt) + '</textarea></div>' +
+      '<p class="hint">Paste this into Notes or a spreadsheet. You can paste it back in later with Paste terms.</p>' +
+      '<div class="sheet-actions"><button class="btn" data-act="close">Close</button><button class="btn primary" data-act="copy-export">Copy</button></div></div>';
+  }
+  return '';
+}
+function renderSheet(focus){
+  const el = $('#sheet'); el.hidden = false;
+  el.innerHTML = '<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true">' + sheetBody() + '</div></div>';
+  if (focus) { const f = el.querySelector('[data-autofocus]'); if (f) setTimeout(() => f.focus(), 40); }
+}
+function openSheet(s){ SH = s; renderSheet(true); }
+function closeSheet(){ SH = null; const el = $('#sheet'); if (el) { el.innerHTML = ''; el.hidden = true; } }
+function updatePreview(){
+  const st = $('#st'), ss = $('#ss'), sp = $('#sp'); if (!st || !sp) return;
+  const p = parseTerms(st.value, ss ? ss.value : 'auto');
+  const d = V.name === 'deck' ? getDeck(V.id) : null;
+  let dupes = 0;
+  if (SH && SH.type === 'import' && d) { const have = new Set(d.cards.map(c => c.t.trim().toLowerCase())); p.cards.forEach(c => { if (have.has(c.t.toLowerCase())) dupes++; }); }
+  let msg = p.cards.length + ' ' + plural(p.cards.length, 'card') + ' found';
+  if (dupes) msg += ', ' + dupes + ' already in this deck';
+  if (p.skipped) msg += ', ' + p.skipped + ' ' + plural(p.skipped, 'line') + ' skipped (no separator)';
+  sp.textContent = st.value.trim() ? msg + '.' : '';
+}
+function reportAdd(r, prefix){
+  if (r.error) { toast(r.error); return false; }
+  toast((prefix || 'Added ') + r.added + ' ' + plural(r.added, 'card') + (r.dupes ? ', skipped ' + r.dupes + ' duplicate' + (r.dupes === 1 ? '' : 's') : '') + '.');
+  return true;
+}
+
+/* ---------- portable backup ---------- */
+function exportBackup(){
+  const data = {format: 'termbox-backup', version: 1, exportedAt: new Date().toISOString(), decks: {}};
+  Object.keys(decks).forEach(id => { if (decks[id] && !decks[id].example) data.decks[id] = toDoc(decks[id]); });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'termbox-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Backup downloaded. Save it in Dropbox to use it on another device.');
+}
+async function importBackup(file){
+  if (!file) return;
+  let parsed;
+  try { parsed = JSON.parse(await file.text()); }
+  catch (e) { toast('That file is not valid JSON.'); return; }
+  // Be forgiving if a deck-only export is selected using the full-backup picker.
+  if (parsed && parsed.format === 'termbox-deck') { await importDeck(file); return; }
+  if (!parsed || parsed.format !== 'termbox-backup' || parsed.version !== 1 || !parsed.decks || typeof parsed.decks !== 'object' || Array.isArray(parsed.decks)) {
+    toast('That file does not look like a Termbox backup. For a single deck, use Import deck.'); return;
+  }
+  const next = {};
+  try {
+    Object.keys(parsed.decks).forEach(id => {
+      if (!id || id === 'example' || !parsed.decks[id] || typeof parsed.decks[id] !== 'object') throw new Error('bad deck');
+      const d = fromDoc(id, parsed.decks[id]);
+      if (d.cards.length > MAX_CARDS || blobSize(toDoc(d)) > MAX_BYTES) throw new Error('large deck');
+      next[id] = d;
+    });
+  } catch (e) { toast('The backup contains a deck that could not be imported.'); return; }
+  const count = Object.keys(next).length;
+  if (!window.confirm('Import ' + count + ' deck' + (count === 1 ? '' : 's') + '? This replaces the decks currently saved in this browser/app, including study progress. Export a backup first if you want to keep the current version.')) return;
+  const oldIds = Object.keys(decks);
+  decks = next;
+  if (mode === 'local') {
+    saveLocal();
+  } else {
+    oldIds.filter(id => !(id in next)).forEach(id => { try { col.doc(id).delete().catch(() => {}); } catch (e) {} });
+    Object.keys(next).forEach(id => queueSave(id, true));
+  }
+  S = null; V = {name: 'library'}; render();
+  toast('Imported ' + count + ' deck' + (count === 1 ? '' : 's') + '.');
+}
+
+/* ---------- deck-only transfer ---------- */
+function exportDeck(){
+  const d = V.name === 'deck' ? getDeck(V.id) : null;
+  if (!d || d.example) { toast('Open one of your own decks first.'); return; }
+  const data = {format: 'termbox-deck', version: 1, exportedAt: new Date().toISOString(), deck: {
+    id: d.id, name: d.name, flip: d.flip, created: d.created, updated: d.updated,
+    cards: d.cards.map(c => ({i: c.i, t: c.t, d: c.d}))
+  }};
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = 'termbox-deck-' + d.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0,40) + '.json';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Deck exported without study progress.');
+}
+async function importDeck(file){
+  if (!file) return;
+  let parsed;
+  try { parsed = JSON.parse(await file.text()); }
+  catch (e) { toast('That file is not valid JSON.'); return; }
+  const src = parsed && parsed.deck;
+  if (!parsed || parsed.format !== 'termbox-deck' || parsed.version !== 1 || !src || typeof src !== 'object' || Array.isArray(src) || typeof src.id !== 'string' || !src.id || src.id === 'example' || !Array.isArray(src.cards)) {
+    toast('That file does not look like a Termbox deck file.'); return;
+  }
+  if (src.cards.length > MAX_CARDS) { toast('That deck has too many cards to import.'); return; }
+  const incoming = [];
+  const seen = new Set();
+  for (const c of src.cards) {
+    if (!c || typeof c.t !== 'string') { toast('The deck file contains an invalid card.'); return; }
+    const i = typeof c.i === 'string' && c.i ? c.i : rid() + rid();
+    if (seen.has(i)) { toast('The deck file contains duplicate card IDs.'); return; }
+    seen.add(i); incoming.push({i, t: c.t, d: typeof c.d === 'string' ? c.d : ''});
+  }
+  const existing = decks[src.id];
+  const preview = existing ? 'Merge ' + incoming.length + ' cards into “' + existing.name + '”? Matching cards will be updated, their study progress will be kept, and new cards will start fresh. Cards missing from the file will not be deleted.' :
+    'Import “' + (typeof src.name === 'string' && src.name ? src.name : 'Untitled deck') + '” with ' + incoming.length + ' cards? Study progress is not included.';
+  if (!window.confirm(preview)) return;
+  let d, added = 0, updated = 0;
+  if (existing) {
+    d = fromDoc(existing.id, toDoc(existing));
+    const byId = new Map(d.cards.map(c => [c.i, c]));
+    incoming.forEach(c => {
+      const old = byId.get(c.i);
+      if (old) { if (old.t !== c.t || old.d !== c.d) updated++; old.t = c.t; old.d = c.d; }
+      else { d.cards.push({i: c.i, t: c.t, d: c.d, b: 0, u: 0, s: 0, l: null}); added++; }
+    });
+    d.name = typeof src.name === 'string' && src.name.trim() ? src.name.trim() : d.name;
+    d.flip = src.flip === 'def' ? 'def' : 'term';
+  } else {
+    d = {id: src.id, name: typeof src.name === 'string' && src.name.trim() ? src.name.trim() : 'Untitled deck', flip: src.flip === 'def' ? 'def' : 'term', created: +src.created || Date.now(), updated: Date.now(), cards: incoming.map(c => ({i:c.i,t:c.t,d:c.d,b:0,u:0,s:0,l:null}))};
+    added = d.cards.length;
+  }
+  if (d.cards.length > MAX_CARDS || blobSize(toDoc(d)) > MAX_BYTES) {
+    toast('This deck would exceed Termbox’s storage limit. No changes were saved.'); return;
+  }
+  decks[d.id] = d;
+  persist(d, true); S = null; V = {name: 'deck', id: d.id}; draft = {t:'',d:'',q:''}; render();
+  toast('Deck imported: ' + added + ' new, ' + updated + ' updated. Existing study progress was kept.');
+}
+
+/* ---------- actions ---------- */
+const ACT = {
+  open: el => go({name: 'deck', id: el.dataset.id}),
+  back: () => go({name: 'library'}),
+  'new-deck': () => openSheet({type: 'new'}),
+  'shared-import': el => importSharedDeck(Number(el.dataset.index)),
+  'shared-refresh': () => loadSharedCatalog(true),
+  'backup-export': () => exportBackup(),
+  'backup-import': () => { const input = $('#backup-file'); if (input) { input.value = ''; input.click(); } },
+  'deck-export': () => exportDeck(),
+  'deck-import': () => { const input = $('#deck-file'); if (input) { input.value = ''; input.click(); } },
+  settings: () => openSheet({type: 'settings'}),
+  import: () => openSheet({type: 'import'}),
+  close: () => closeSheet(),
+  'edit-card': el => openSheet({type: 'edit', cardId: el.dataset.id}),
+  'set-flip': el => { const d = getDeck(V.id); if (!d || d.flip === el.dataset.v) return; d.flip = el.dataset.v; persist(d); render(); },
+  start: el => {
+    const id = S ? S.deckId : V.id;
+    if (S) { const m = el.dataset.mode, p = el.dataset.pool; S = null; startSession(id, m, p); } else startSession(id, el.dataset.mode, el.dataset.pool);
+  },
+  'again-missed': () => { const id = S.deckId, m = S.mode, ids = Array.from(S.missed); S = null; startSession(id, m, 'missed', ids); },
+  done: () => { if (S) { const d = getDeck(S.deckId); S = null; if (d && !d.example) flushAll(); } render(); },
+  flip: () => flipCard(),
+  got: () => { if (S && S.revealed) { grade(true); advance(); } },
+  missed: () => { if (S && S.revealed) { grade(false); advance(); } },
+  pick: el => pick(+el.dataset.i),
+  next: () => { if (S && S.picked != null) advance(); },
+  'del-card': () => {
+    const d = getDeck(V.id); if (!d || !SH) return;
+    if (!SH.confirm) { SH.confirm = true; renderSheet(false); return; }
+    d.cards = d.cards.filter(c => c.i !== SH.cardId); persist(d, true); closeSheet(); render(); toast('Card deleted.');
+  },
+  export: () => openSheet({type: 'export'}),
+  'copy-export': () => {
+    const ta = $('#ex'); if (!ta) return;
+    const fallback = () => { ta.focus(); ta.select(); toast('Selected. Use Copy from the pop-up menu.'); };
+    try { navigator.clipboard.writeText(ta.value).then(() => toast('Copied.'), fallback); } catch (e) { fallback(); }
+  },
+  reset: () => {
+    const d = getDeck(V.id); if (!d || !SH) return;
+    if (SH.confirm !== 'reset') { SH.confirm = 'reset'; renderSheet(false); return; }
+    d.cards.forEach(c => { c.b = 0; c.u = 0; c.s = 0; c.l = null; }); persist(d, true); closeSheet(); render(); toast('Progress reset.');
+  },
+  'del-deck': () => {
+    const d = getDeck(V.id); if (!d || !SH) return;
+    if (SH.confirm !== 'del') { SH.confirm = 'del'; renderSheet(false); return; }
+    const id = d.id; closeSheet(); removeDeck(id); go({name: 'library'}); toast('Deck deleted.');
+  }
+};
+function flipCard(){
+  if (!S || S.done || S.mode !== 'flip') return;
+  S.flipped = !S.flipped; S.revealed = true;
+  const card = $('#card'); if (card) card.classList.toggle('flipped', S.flipped);
+  const a = $('#sact'); if (a) a.innerHTML = flipActions();
+}
+function pick(i){
+  if (!S || S.mode !== 'quiz' || S.picked != null || !S.opts[i]) return;
+  S.picked = i; grade(S.opts[i].ok); render();
+}
+
+const FORM = {
+  new: f => {
+    const name = $('#sn').value.trim(); if (!name) return;
+    const now = Date.now();
+    const d = {id: 'd' + rid() + rid(), name, flip: 'term', created: now, updated: now, cards: []};
+    const txt = $('#st').value;
+    let msg = 'Deck created.';
+    if (txt.trim()) {
+      const r = addCards(d, parseTerms(txt, $('#ss').value).cards);
+      if (r.error) { toast(r.error); return; }
+      msg = 'Deck created with ' + r.added + ' ' + plural(r.added, 'card') + '.';
+    }
+    decks[d.id] = d; persist(d, true); go({name: 'deck', id: d.id}); toast(msg);
+  },
+  import: f => {
+    const d = getDeck(V.id); if (!d) return;
+    const p = parseTerms($('#st').value, $('#ss').value);
+    if (!p.cards.length) { toast('No cards found. Put a tab or dash between each term and its definition.'); return; }
+    const r = addCards(d, p.cards);
+    if (!reportAdd(r)) return;
+    if (r.added) persist(d, true);
+    closeSheet(); render();
+  },
+  edit: f => {
+    const d = getDeck(V.id), c = d && SH && d.cards.find(x => x.i === SH.cardId); if (!c) return;
+    const t = $('#et').value.trim(), def = $('#ed').value.trim(); if (!t || !def) return;
+    if (d.cards.some(x => x.i !== c.i && x.t.trim().toLowerCase() === t.toLowerCase())) { toast('Another card already uses that term.'); return; }
+    c.t = t; c.d = def; persist(d); closeSheet(); render();
+  },
+  rename: f => {
+    const d = getDeck(V.id); const n = $('#rn').value.trim(); if (!d || !n) return;
+    d.name = n; persist(d); closeSheet(); render(); toast('Name saved.');
+  },
+  'add-card': f => {
+    const d = getDeck(V.id); if (!d || d.example) return;
+    const t = $('#nt').value.trim(), def = $('#nd').value.trim();
+    if (!t) { $('#nt').focus(); return; }
+    if (!def) { $('#nd').focus(); return; }
+    const r = addCards(d, [{t, d: def}]);
+    if (r.error) { toast(r.error); return; }
+    if (!r.added) { toast('That term is already in this deck.'); return; }
+    draft.t = ''; draft.d = ''; persist(d); render();
+    const nt = $('#nt'); if (nt) nt.focus();
+    toast('Added “' + t.slice(0, 40) + '”.');
+  }
+};
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const act = el.dataset.act;
+  if (act === 'scrim') { if (e.target === el) closeSheet(); return; }
+  const fn = ACT[act]; if (fn) fn(el, e);
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest ? e.target.closest('form[data-form]') : null; if (!f) return;
+  e.preventDefault(); const fn = FORM[f.dataset.form]; if (fn) fn(f);
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.id === 'nt') draft.t = t.value;
+  else if (t.id === 'nd') draft.d = t.value;
+  else if (t.id === 'q') { draft.q = t.value; const d = getDeck(V.id), box = $('#cardlist'); if (d && box) box.innerHTML = rowsHtml(d, draft.q); }
+  else if (t.id === 'st' || t.id === 'ss') updatePreview();
+});
+document.addEventListener('change', e => { if (e.target.id === 'ss') updatePreview(); else if (e.target.id === 'backup-file' && e.target.files && e.target.files[0]) importBackup(e.target.files[0]); else if (e.target.id === 'deck-file' && e.target.files && e.target.files[0]) importDeck(e.target.files[0]); });
+document.addEventListener('keydown', e => {
+  if (SH) { if (e.key === 'Escape') closeSheet(); return; }
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+    if (e.target.id === 'nt' && e.key === 'Enter') { e.preventDefault(); const nd = $('#nd'); if (nd) nd.focus(); }
+    else if (e.target.id === 'nd' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); const b = e.target.form && e.target.form.querySelector('[type=submit]'); if (b) b.click(); }
+    return;
+  }
+  if (!S || S.done || tag === 'BUTTON') return;
+  const k = e.key;
+  if (S.mode === 'flip') {
+    if (k === ' ' || k === 'Enter') { e.preventDefault(); flipCard(); }
+    else if (S.revealed && (k === 'ArrowRight' || k === '2')) { e.preventDefault(); ACT.got(); }
+    else if (S.revealed && (k === 'ArrowLeft' || k === '1')) { e.preventDefault(); ACT.missed(); }
+  } else {
+    if (/^[1-4]$/.test(k)) pick(+k - 1);
+    else if ((k === ' ' || k === 'Enter') && S.picked != null) { e.preventDefault(); ACT.next(); }
+  }
+});
+window.addEventListener('hashchange', () => { if ((location.hash || '#library').slice(1) !== hashFor(V)) route(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushAll(); });
+window.addEventListener('pagehide', flushAll);
+
+/* ---------- start ---------- */
+async function init(){
+  render();
+  let dbNs = null, id = null;
+  try {
+    for (let i = 0; i < 20 && !(window.claude && window.claude.use); i++) await sleep(100);
+    if (window.claude && window.claude.use) {
+      const r = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+      dbNs = r[0]; if (r[1]) id = await r[1].id();
+    }
+  } catch (e) { dbNs = null; }
+  if (dbNs && id) {
+    mode = 'db';
+    try {
+      col = dbNs.collection('data/users/' + id);
+      col.onSnapshot(onSnap, err => {
+        if (!loaded) { mode = 'local'; decks = loadLocal(); loaded = true; route(); }
+        else toast('Lost connection to saved decks. Reload to reconnect.');
+      });
+    } catch (e) { mode = 'local'; decks = loadLocal(); loaded = true; route(); }
+  } else { mode = 'local'; decks = loadLocal(); loaded = true; route(); }
+  loadSharedCatalog();
+}
+init();
+})();
+</script>
+
+</body></html>
